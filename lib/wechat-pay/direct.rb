@@ -2,6 +2,7 @@
 
 require 'json'
 require 'wechat-pay/helper'
+require 'wechat-pay/result'
 
 module WechatPay
   # # 直连商户相关接口封装（常用的已有，待完善）
@@ -188,13 +189,7 @@ module WechatPay
       query = build_query(params)
       url = "#{path}?#{query}"
 
-      make_request(
-        method: method,
-        path: url,
-        extra_headers: {
-          'Content-Type' => 'application/x-www-form-urlencoded'
-        }
-      )
+      WechatPay::Result.new make_request(method: method, path: url,)
     end
 
     CLOSE_ORDER_FIELDS = %i[out_trade_no].freeze # :nodoc:
@@ -218,7 +213,7 @@ module WechatPay
 
       method = 'POST'
 
-      make_request(
+      WechatPay::Result.new make_request(
         method: method,
         path: url,
         for_sign: params.to_json,
@@ -277,7 +272,7 @@ module WechatPay
 
       method = 'GET'
 
-      make_request(
+      WechatPay::Result.new make_request(
         method: method,
         path: url,
         extra_headers: {
@@ -354,12 +349,14 @@ module WechatPay
 
         params = {
           mchid: WechatPay.mch_id,
-          appid: WechatPay.app_id
         }.merge(params)
+
+
+        params[:appid] = WechatPay.app_id if params[:appid].nil?
 
         payload_json = params.to_json
 
-        make_request(
+        WechatPay::Result.new make_request(
           method: method,
           path: url,
           for_sign: payload_json,
