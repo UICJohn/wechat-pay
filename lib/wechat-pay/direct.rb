@@ -189,7 +189,7 @@ module WechatPay
       query = build_query(params)
       url = "#{path}?#{query}"
 
-      WechatPay::Result.new make_request(method: method, path: url,)
+      make_request(method: method, path: url,)
     end
 
     CLOSE_ORDER_FIELDS = %i[out_trade_no].freeze # :nodoc:
@@ -213,7 +213,7 @@ module WechatPay
 
       method = 'POST'
 
-      WechatPay::Result.new make_request(
+      make_request(
         method: method,
         path: url,
         for_sign: params.to_json,
@@ -272,7 +272,7 @@ module WechatPay
 
       method = 'GET'
 
-      WechatPay::Result.new make_request(
+      make_request(
         method: method,
         path: url,
         extra_headers: {
@@ -356,7 +356,7 @@ module WechatPay
 
         payload_json = params.to_json
 
-        WechatPay::Result.new make_request(
+        make_request(
           method: method,
           path: url,
           for_sign: payload_json,

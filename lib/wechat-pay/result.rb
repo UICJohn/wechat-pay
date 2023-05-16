@@ -5,7 +5,11 @@ module WechatPay
     attr_reader :data
 
     def initialize(response)
-      @data = JSON.parse response.body
+      @data = if response.code != 204
+                JSON.parse response.body
+              else
+                {}
+              end
     end
 
 

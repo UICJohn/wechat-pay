@@ -20,14 +20,14 @@ module WechatPayHelper # :nodoc:
         'Accept-Encoding' => '*'
       }.merge(extra_headers)
 
-      RestClient::Request.execute(
+      WechatPay::Result.new  RestClient::Request.execute(
         url: "#{GATEWAY_URL}#{path}",
         method: method.downcase,
         payload: payload,
         headers: headers.compact # Remove empty items
       )
     rescue ::RestClient::ExceptionWithResponse => e
-      e.response
+      WechatPay::Result.new e.response
     end
   end
 end
